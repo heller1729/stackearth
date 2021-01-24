@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
-
+{% block title %}Leave Approval |HRM{% endblock %}
 {% block content %}
-<div id='leaveApprove' onclick="approveLeaves();">Approve Leaves</div>
+<br>
+<div id='leaveApprove' onclick="approveLeaves();"><button class="btn btn-primary btn-rounded btn-lg">Approve Pending Leaves</button></div>
 <div id='leaveList'></div>
 {% endblock %}

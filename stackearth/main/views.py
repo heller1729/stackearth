@@ -144,7 +144,8 @@ def createEmployee(request):
 def saveAttendance(request):
     data = json.load(request)
     Present = False
-    if data['status'] == 'present':
+    print(data)
+    if data['status'] == True:
         Present= True
     user = Attendance.objects.get(user=data['user'],date=data['date'])
     user.present = Present
@@ -248,8 +249,13 @@ def save_team(request):
         data = json.load(request)
         print(data)
         team_name = data['team']
-        Team.objects.create(team_name=team_name)
-        return HttpResponse('ok')
+        try:
+            team = Team.objects.get(team_name=team_name)
+        except Team.DoesNotExist:
+            Team.objects.create(team_name=team_name)
+            return HttpResponse('ok')
+        else:
+            return HttpResponse('already Exists')
     else:
         return HttpResponse('Not allowed')
 
@@ -261,9 +267,14 @@ def save_role(request):
         data = json.load(request)
         team_name = data['team']
         role = data['role']
-        team = Team.objects.get(team_name=team_name)
-        Role.objects.create(role=role,team=team)
-        return HttpResponse('ok')
+        try:
+            Role.objects.get(role=role)
+        except Role.DoesNotExist:
+            team = Team.objects.get(team_name=team_name)
+            Role.objects.create(role=role,team=team)
+            return HttpResponse('ok')
+        else:
+            return HttpResponse('already exists')
     else:
         return HttpResponse('Not allowed')
 

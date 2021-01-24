@@ -48,19 +48,20 @@ const csrftoken = getCookie('csrftoken');
         data:JSON.stringify(atdDate),
         
         success: function(attendance){ 
-          var abc="";
+          var abc="<div class='container'>";
           console.log('ok');
           console.log($admin);
           console.log(attendance);
             attendance.forEach(element => {
               // abc+='<div class="col"'+element.name+'<select>'+element.present?'<option selected value="Present">Present</option><option value="Absent">Absent</option>':'<option selected value="Absent">Absent</option><option value="Present">Present</option>'+'</select>'+'</li>';
-                abc+='<div class="container"><div class="row">';
+                abc+='<div class="row">';
                 abc+='<div class="col">'+element.name+'</div>';
-                abc+='<div class="col"><select id="'+element.name+'" onchange="saveAttendance('+element.user+',$(\'#'+element.name+'\').val());">';
+                abc+='<div class="col"><select class="form-select form-select-lg mb-3" id="atd'+element.user+'" onchange="saveAttendance('+element.user+',$(\'#atd'+element.user+'\').val());">';
                 abc+= element.present? '<option selected value="present">Present</option><option value="absent">Absent</option>': '<option selected value="absent">Absent</option><option value="present">Present</option>'
                 abc+='</select></div>';
-                abc+='</div></div>';
+                abc+='</div>';
               });
+              abc+= "</div>";
             
 
             $('#attendanceReceived').html(abc);
@@ -101,6 +102,7 @@ const csrftoken = getCookie('csrftoken');
         status: attendance,
         date : date,
       }
+      console.log(data);
 
       $.ajax({
         type: 'POST',
@@ -226,7 +228,7 @@ const csrftoken = getCookie('csrftoken');
             abc+="<div class='col'>"+element.from_date+"</div>";
             abc+="<div class='col'>"+element.till_date+"</div>";
             abc+="<div class='col'><p>"+element.reason+"</p></div>";
-            abc+="<div class='col'><select id='approve"+element.applicant+"' onchange='postLeaveApprove("+element.applicant+",\""+element.from_date+"\",\""+element.till_date+"\",$(\"#approve"+element.applicant+"\").val());'>";
+            abc+="<div class='col'><select class='form-select form-select-lg mb-3' id='approve"+element.applicant+"' onchange='postLeaveApprove("+element.applicant+",\""+element.from_date+"\",\""+element.till_date+"\",$(\"#approve"+element.applicant+"\").val());'>";
             abc+=element.confirmed?"<option selected value='true'>Approved</option><option  value='false'>Not Approved</option>" : "<option selected  value='false'>Not Approved</option><option  value='true'>Approved</option>";
             abc+="</select></div></div>";
 
@@ -264,17 +266,18 @@ const csrftoken = getCookie('csrftoken');
         success: function(data){
           var abc="";
           console.log(data);
+          abc+="<select id='teamrole'>";
           data.forEach(element => {
-            abc+="<select id='teamrole'>";
             abc+="<option value="+element.team_name+">"+element.team_name+"</option>";
-            abc+="</select>";
+            
           })
+          abc+="</select>";
           $('#roleTeam').html(abc);
         }
       });
     }
 
-    function saveTeam(team){
+    function saveTeam(){
       var data = {'team' : $('#teamname').val()};
       $.ajax({
         type: 'POST',
@@ -287,7 +290,7 @@ const csrftoken = getCookie('csrftoken');
       });
     }
 
-    function saveRole(role){
+    function saveRole(){
       var data = {'role': $('#rolename').val(),'team':$('#teamrole').val()};
       $.ajax({
         type: 'POST',
@@ -337,11 +340,13 @@ const csrftoken = getCookie('csrftoken');
       success: function(response){
           var abc="";
           console.log(response);
+          abc+="<br><label for='teamrole'>Team Role:</label><br><select class='form-select form-select-lg mb-3' id='teamrole'>";
           response.forEach(element => {
-            abc+="<select id='teamrole'>";
+            
             abc+="<option value="+element.team_name+">"+element.team_name+"</option>";
-            abc+="</select>";
+            
           })
+          abc+="</select><br>";
           $('#team').html(abc);
       }
     });
@@ -356,11 +361,13 @@ const csrftoken = getCookie('csrftoken');
       success: function(response){
           var abc="";
           console.log(response);
+          abc+="<br><label for='emprole'>Employee Role:</label><br><select class='form-select form-select-lg mb-3' id='emprole'>";
           response.forEach(element => {
-            abc+="<select id='emprole'>";
+            
             abc+="<option value="+element.role+">"+element.role+"</option>";
-            abc+="</select>";
+            
           })
+          abc+="</select><br>";
           $('#role').html(abc);
       }
     });
@@ -390,8 +397,8 @@ const csrftoken = getCookie('csrftoken');
     });
   }
 
-  function searchEmployeeByTeam(){
-    var data = {'team': $('#emprole').val()};
+  function searchEmployeeByRole(){
+    var data = {'role': $('#emprole').val()};
     $.ajax({
       type: 'POST',
       url: 'http://127.0.0.1:8000/searchEmployeeByRole',

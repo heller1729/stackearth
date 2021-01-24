@@ -1,7 +1,9 @@
 {% extends 'main/base.html' %}
-
+{% block title %}Attendance | HRM{% endblock %}
 {% block content %}
+    <br>
     <div id="attendance">
+        <label for="atdDate"><b>Input Date:</b></label>
         <input type="date" id='atdDate' onchange="fetchAttendance();">
         <br>
         <div id='attendanceReceived'>
