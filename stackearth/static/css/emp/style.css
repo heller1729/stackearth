@@ -15,21 +15,30 @@ body {
 
 select {
   width: 41.55%;
-  border: 0.5px solid;
   border-radius: 5px;
   height:65%;
   
 }
+
+select:focus {
+  border: 0.5px #163B6F solid;
+}
+
 #dob {
-  border: 1px solid cornflowerblue;
+  border: 0.5px #163B6F solid;
   border-radius: 5px;
   height:65%;
 }
+
 .input__field {
-  /* border-color:#163B6F; */
-  border: 0.5px solid;
+  border: 0.5px #DADCE0;
   border-radius: 5px;
   height:65%;
+}
+
+.input__field:focus {
+  border: 1px #1B66CA solid;
+  
 }
 
 textarea {
@@ -75,4 +84,6 @@ textarea {
   font-size:8px;
   right: 30px;
   bottom: 15px;
+}
+
 }
